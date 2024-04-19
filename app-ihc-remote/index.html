@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejecución De Órdenes</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 70px; 
+            padding-bottom: 70px; 
+        }
+        footer {
+            background-color: #d3dae2;
+            padding: 20px 0;
+        }
+        .custom-control {
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Ejecución De Órdenes IHC</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    
+    <div class="container mt-5">
+        <h3>EJECUCIÓN DE ÓRDENES</h3>
+    </div>
+    <br>
+
+    <main class="container mt-4">
+        <form>
+            <div class="form-group">
+                <label for="inputUltimaOrden" class="form-label">Última Orden Ejecutada:</label>
+                <input type="text" class="form-control" id="inputUltimaOrden" value="Cargando última orden ..." disabled>
+            </div>
+        </form>
+    </main>
+
+    <br>
+    
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <span class="text-muted">Derechos de Autor © 2024. Brayan Perez San Juan.</span>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Llama a leerFraseAFirebase cada 2 segundos
+            setInterval(leerFraseAFirebase, 2000);
+        });
+    
+        function leerFraseAFirebase() {
+            axios.get('https://660c51203a0766e85dbdea46.mockapi.io/Voz')
+                .then(response => {
+                    const jsonArray = response.data;
+                    if (jsonArray.length > 1) {
+                        const ultimoRegistro = jsonArray[jsonArray.length - 1];
+                        const ordenTexto = document.getElementById('inputUltimaOrden');
+                        ordenTexto.value = ultimoRegistro.frase;
+    
+                        // Mostrar la frase obtenida en la consola del navegador
+                        console.log('Última frase obtenida:', ultimoRegistro.frase);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+    
+
+</body>
+</html>
+
